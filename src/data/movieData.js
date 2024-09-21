@@ -8,7 +8,12 @@ async function getDb() {
     
 }
 
-async function getMovies(){
+ function saveDb(data){
+return fs.writeFile('./src/db.json', JSON.stringify(data, {}, 2));
+
+
+}
+async function getAll(){
   const db = await getDb();
     
 
@@ -16,7 +21,16 @@ async function getMovies(){
 
 }
 
+async function create(movieData){
+ const db = await getDb();
+
+ db.movies.push(movieData);
+
+ return saveDb(db);
+
+}
 export default {
-    getMovies
+    getAll,
+    create
 
 }
