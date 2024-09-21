@@ -29,10 +29,10 @@ router.get('/:movieId/details', async (req,res) => {
 })
 
 router.get('/search', async (req, res) => {
-    const query = req.query;
+    const filter = req.query;
     try {
-        const movies = await movieService.getAll(query);
-        res.render('home', { isSearch: true, movies });
+        const movies = await movieService.getAll(filter);
+        res.render('home', { isSearch: true, movies , filter });
     } catch (error) {
         res.status(500).send("An error occurred while processing your search: " + error.message);
     }
