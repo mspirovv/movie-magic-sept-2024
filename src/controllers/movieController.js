@@ -1,9 +1,10 @@
-import { Router } from "express";
+import { query, Router } from "express";
 import movieService from "../services/movieService.js";
 
 const router = Router();
 
 //URL /movies/create
+
 router.get('/create', (req,res) => {
     res.render('movies/create')
 
@@ -26,6 +27,19 @@ router.get('/:movieId/details', async (req,res) => {
 
     res.render('movies/details', { movie });
 })
+
+router.get('/search', async (req, res) => {
+    const query = req.query;
+    try {
+        const movies = await movieService.getAll(query);
+        res.render('home', { isSearch: true, movies });
+    } catch (error) {
+        res.status(500).send("An error occurred while processing your search: " + error.message);
+    }
+});
+
+
+
 
 function getRatingViewData(rating){
     if (!Number.isInteger(rating)){
