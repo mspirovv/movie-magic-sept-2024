@@ -3,6 +3,11 @@ import movieService from "../services/movieService.js";
 
 const router = Router();
 
+function toArray(documents){
+    return documents.map(document => document.toObject());  
+}
+
+
 router.get('/create', (req,res) => {
     res.render('movies/create')
 
@@ -23,14 +28,14 @@ router.get('/:movieId/details', async (req,res) => {
 
     movie.ratingView = getRatingViewData(movie.rating);
 
-    res.render('movies/details', { movie });
+    res.render('movies/details', { movie});
 })
 
 router.get('/search', async (req, res) => {
     const filter = req.query;
     try {
         const movies = await movieService.getAll(filter);
-        res.render('home', { isSearch: true, movies , filter });
+        res.render('home', { isSearch: true, movies: toArray(movies) , filter });
     } catch (error) {
         res.status(500).send("An error occurred while processing your search: " + error.message);
     }
