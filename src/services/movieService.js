@@ -36,7 +36,7 @@ const getAll = async (filter = {}) => {
 
 const create = (movie) =>  Movie.create(movie); 
 
-const getOne = (movieId) =>  Movie.findById(movieId).lean;
+const getOne = (movieId) =>  Movie.findById(movieId).lean();
 
 export default {
     getAll,

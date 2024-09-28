@@ -24,13 +24,16 @@ movieService.create(movieData);
 
 router.get('/:movieId/details', async (req,res) => {
     const movieId = req.params.movieId;
-    const movie = await movieService.getOne(movieId).lean();
+    const movie = await movieService.getOne(movieId);
 
     movie.ratingView = getRatingViewData(movie.rating);
 
-    res.render('movies/details', { movie});
+    res.render('movies/details', { movie });
 })
 
+router.get('/:movieId/attach', (req,res) => {
+    res.render('/movies/attach')
+})
 router.get('/search', async (req, res) => {
     const filter = req.query;
     try {
