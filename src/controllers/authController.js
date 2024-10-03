@@ -16,6 +16,10 @@ router.post('/register', async (req,res) => {
     await authService.register(email,password);
 
     res.redirect('/auth/login');
+});
+
+router.get('/login', (req,res) => {
+    res.render('auth/login');
 })
 
 export default router;
