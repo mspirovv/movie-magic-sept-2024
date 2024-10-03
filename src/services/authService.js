@@ -1,5 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const SECRET = 'kodsadkosadko312312as'
 
 const register = (email,password) => {
     return User.create({ email,password })
@@ -18,6 +21,15 @@ const login = async (email,password) => {
     if (!isValid) {
         throw new Error('Password does not match!');
     }
+
+    const payload = { 
+        _id: user._id,
+        email,
+     }
+    const token = jwt.sign(payload, SECRET, { expiresIn: '2h' });
+
+    return token;
+    
 
 }
 
