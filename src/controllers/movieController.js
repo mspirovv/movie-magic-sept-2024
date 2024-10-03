@@ -30,18 +30,23 @@ router.get('/:movieId/details', async (req,res) => {
     res.render('movies/details', { movie });
 });
 
-router.get('/:movieId/attach', async (req,res) => {
+router.get('/:movieId/attach', async (req, res) => {
     const movie = await movieService.getOne(req.params.movieId).lean();
-    const casts = await castService.getAll().lean();
 
-    res.render('movies/attach', { movie,casts});
+    // Проверка дали movie.casts съществува и не е undefined
+    const castIds = (movie.casts || []).map(cast => cast.cast); 
+
+    const casts = await castService.getAllWithout(castIds).lean();
+
+    res.render('movies/attach', { movie, casts });
 });
 
 router.post('/:movieId/attach', async (req,res) => {
     const movieId = req.params.movieId;
     const castId = req.body.cast;
+    const character = req.body.character;
 
-    await movieService.attach(movieId,castId);
+    await movieService.attach(movieId,castId,character);
     
 
     res.redirect(`/movies/${movieId}/details`);
