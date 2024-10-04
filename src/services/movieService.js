@@ -33,7 +33,7 @@ const getAll =  (filter = {}) => {
 };
 
 
-const create = (movie) =>  Movie.create(movie); 
+const create = (movie,ownerId) =>  Movie.create({...movie, owner: ownerId}); 
 
 const getOne = (movieId) =>  Movie.findById(movieId).populate('casts.cast');
 
