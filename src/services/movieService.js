@@ -47,10 +47,14 @@ const attach = async (movieId,castId,character) => {
 
 const remove = (movieId) => Movie.findByIdAndDelete(movieId);
 
+const edit = (movieId,data) => Movie.findByIdAndUpdate(movieId,data);
+
 export default {
     getAll,
     create,
     getOne,
     attach,
     remove,
+    edit,
+
 }   
