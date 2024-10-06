@@ -29,8 +29,9 @@ router.get('/:movieId/details', async (req,res) => {
     const movie = await movieService.getOne(movieId).lean();
 
     const isOwner = req.user?._id === movie.owner?.toString();
+    const isAuthenticated = !!req.user;
 
-    res.render('movies/details', { movie, isOwner });
+    res.render('movies/details', { movie, isOwner, isAuthenticated });
 });
 
 router.get('/:movieId/attach', async (req, res) => {
