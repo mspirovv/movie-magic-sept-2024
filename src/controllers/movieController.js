@@ -72,8 +72,15 @@ router.get('/:movieId/delete', async (req,res) => {
     
     await movieService.remove(movieId);
 
-    res.redirect('/');
+    res.redirect('/');  
 
+})
+
+router.get('/:movieId/edit', async (req,res) => {
+    const movieId = req.params.movieId;
+    const movie = await movieService.getOne(movieId).lean();
+
+    res.render('movies/edit', { movie });
 })
 
 
