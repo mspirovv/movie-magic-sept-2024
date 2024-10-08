@@ -15,11 +15,19 @@ router.get('/create', isAuth ,(req,res) => {
 
 });
 
-router.post('/create', isAuth ,(req,res) => {
+router.post('/create', isAuth , async (req,res) => {
    const movieData = req.body;
    const ownerId = req.user?._id;
 
-movieService.create(movieData,ownerId);
+   try{
+   await  movieService.create(movieData,ownerId);
+   
+   } catch(err) {
+     const errorMessage = Object.values(err.errors)[0]?.message;
+      
+     return res.render('movies/create', { error: errorMessage , movie: movieData });
+   }
+
 
   res.redirect('/');
 
@@ -71,7 +79,13 @@ router.get('/search', async (req, res) => {
 
 router.get('/:movieId/delete',isAuth, async (req,res) => {
     const movieId = req.params.movieId;
-    
+
+    const movie = await movieService.getOne(movieId);
+
+    if ( movie.owner?.toString() !== req.user._id){
+        res.setError('You cannot delete this movie!');
+        return res.redirect('/404');
+    };
     await movieService.remove(movieId);
 
     res.redirect('/');  

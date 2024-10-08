@@ -11,6 +11,11 @@
 <body>
 
     <div id="box">
+        {{#if error}}
+    <div class="error-container">
+        <p>{{error}}</p>
+    </div>
+    {{/if}}
 
         <nav>
             <img src="/img/logo.webp" alt="logo">
@@ -31,7 +36,7 @@
                 <li><a href="/auth/register">Register</a></li>
                 {{/if}}
             </ul>
-            {{#if}}<em>{{userEmail}}</em>{{/if}}
+            {{#if userEmail}}<em>{{userEmail}}</em>{{/if}}
 
         </nav>
 

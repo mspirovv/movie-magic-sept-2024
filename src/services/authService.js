@@ -1,11 +1,18 @@
 import User from "../models/User.js";
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt from '../lib/jwt.js';
 import { JWT_SECRET } from "../config/constants.js";
+import { error } from "console";
 
 
-const register = (email,password) => {
-    return User.create({ email,password })
+const register = async (email,password,rePassword) => {
+
+   const userCount =  await User.countDocuments({email});
+   
+   if (userCount > 0) {
+    throw new Error('User already exists!');
+   }
+    return User.create({ email,password,rePassword })
 
 }
 
@@ -26,7 +33,7 @@ const login = async (email,password) => {
         _id: user._id,
         email,
      }
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
+    const token = await jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
 
     return token;
 
